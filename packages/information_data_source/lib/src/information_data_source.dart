@@ -1,4 +1,4 @@
-import 'model/model.dart';
+import 'models/models.dart';
 
 abstract interface class InformationDataSource {
   Future<void> saveInformation(Information information);

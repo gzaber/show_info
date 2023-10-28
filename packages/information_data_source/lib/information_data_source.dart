@@ -1,4 +1,4 @@
 library;
 
-export 'src/model/model.dart';
+export 'src/models/models.dart';
 export 'src/information_data_source.dart';
