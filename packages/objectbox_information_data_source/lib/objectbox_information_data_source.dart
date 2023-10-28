@@ -1,7 +1,4 @@
 library objectbox_information_data_source;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/objectbox_information_data_source.dart';
+export 'objectbox.g.dart' show openStore;
