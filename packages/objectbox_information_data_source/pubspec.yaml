@@ -1,0 +1,22 @@
+name: objectbox_information_data_source
+description: A Flutter implementation of the InformationDataSource that uses ObjectBox.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  information_data_source:
+    path: ../information_data_source
+  objectbox: ^2.3.1
+  objectbox_flutter_libs: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+  objectbox_generator: any

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../model/model.dart';
+import '../models/models.dart';
 
 class Information extends Equatable {
   Information({
