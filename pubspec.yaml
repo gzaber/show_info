@@ -1,6 +1,6 @@
 name: show_information
-description: A new Flutter project.
-publish_to: "none"
+description: A mobile application for displaying saved information to others.
+publish_to: none
 version: 1.0.0+1
 
 environment:
@@ -9,6 +9,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  information_data_source:
+    path: packages/information_data_source
+  information_repository:
+    path: packages/information_repository
+  objectbox_information_data_source:
+    path: packages/objectbox_information_data_source
+  path: ^1.8.3
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
