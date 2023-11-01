@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Text extends Equatable {
-  Text({
+  const Text({
     this.id = 0,
     required this.content,
     this.fontSize = 20,

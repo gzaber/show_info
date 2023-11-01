@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../models/models.dart';
 
 class Information extends Equatable {
-  Information({
+  const Information({
     this.id = 0,
     required this.texts,
     this.color = 0,
