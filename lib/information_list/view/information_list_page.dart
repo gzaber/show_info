@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:information_data_source/information_data_source.dart' hide Text;
 import 'package:information_repository/information_repository.dart';
+import 'package:show_information/add_edit_information/add_edit_information.dart';
 import 'package:show_information/information_list/information_list.dart';
 
 class InformationListPage extends StatelessWidget {
@@ -31,7 +32,9 @@ class InformationListView extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(AddEditInformationPage.route());
+        },
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
       ),
@@ -77,10 +80,16 @@ class _InformationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      itemCount: informationList.length,
       itemBuilder: (_, index) {
         return ListTile(
           title: Text(
-              '${informationList[index].texts.map((t) => t.content).toList()}'),
+            '${informationList[index].texts.map((t) => t.content).toList()}',
+          ),
+          onTap: () {
+            Navigator.of(context).push(AddEditInformationPage.route(
+                information: informationList[index]));
+          },
         );
       },
     );
