@@ -20,8 +20,8 @@ final class AddEditInformationNewTextAdded extends AddEditInformationEvent {
   const AddEditInformationNewTextAdded();
 }
 
-final class AddEditInformationTextSelected extends AddEditInformationEvent {
-  const AddEditInformationTextSelected(this.index);
+final class AddEditInformationTextDeleted extends AddEditInformationEvent {
+  const AddEditInformationTextDeleted(this.index);
 
   final int index;
 
@@ -31,6 +31,7 @@ final class AddEditInformationTextSelected extends AddEditInformationEvent {
 
 final class AddEditInformationTextChanged extends AddEditInformationEvent {
   const AddEditInformationTextChanged({
+    required this.index,
     this.content,
     this.fontSize,
     this.isBold,
@@ -38,6 +39,7 @@ final class AddEditInformationTextChanged extends AddEditInformationEvent {
     this.isUnderline,
   });
 
+  final int index;
   final String? content;
   final int? fontSize;
   final bool? isBold;
@@ -45,7 +47,8 @@ final class AddEditInformationTextChanged extends AddEditInformationEvent {
   final bool? isUnderline;
 
   @override
-  List<Object?> get props => [content, fontSize, isBold, isItalic, isUnderline];
+  List<Object?> get props =>
+      [index, content, fontSize, isBold, isItalic, isUnderline];
 }
 
 final class AddEditInformationSubmitted extends AddEditInformationEvent {

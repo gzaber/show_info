@@ -12,12 +12,13 @@ class InformationListState extends Equatable {
   final List<Information> informationList;
 
   InformationListState copyWith({
-    InformationListStatus? status,
-    List<Information>? informationList,
+    InformationListStatus Function()? status,
+    List<Information> Function()? informationList,
   }) {
     return InformationListState(
-      status: status ?? this.status,
-      informationList: informationList ?? this.informationList,
+      status: status != null ? status() : this.status,
+      informationList:
+          informationList != null ? informationList() : this.informationList,
     );
   }
 
