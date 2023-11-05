@@ -14,8 +14,18 @@ class ObjectboxInformationDataSource implements InformationDataSource {
   }
 
   @override
+  Future<void> saveText(Text text) async {
+    await _store.box<TextEntity>().putAsync(text.toEntity());
+  }
+
+  @override
   Future<void> deleteInformation(int id) async {
     await _store.box<InformationEntity>().removeAsync(id);
+  }
+
+  @override
+  Future<void> deleteText(int id) async {
+    await _store.box<TextEntity>().removeAsync(id);
   }
 
   @override
