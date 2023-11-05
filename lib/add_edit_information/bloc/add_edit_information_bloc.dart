@@ -23,7 +23,7 @@ class AddEditInformationBloc
         ) {
     on<AddEditInformationColorChanged>(_addEditInformationColorChanged);
     on<AddEditInformationNewTextAdded>(_addEditInformationNewTextAdded);
-    on<AddEditInformationTextSelected>(_addEditInformationTextSelected);
+    on<AddEditInformationTextDeleted>(_addEditInformationTextDeleted);
     on<AddEditInformationTextChanged>(_addEditInformationTextChanged);
     on<AddEditInformationSubmitted>(_addEditInformationSubmitted);
   }
@@ -41,30 +41,32 @@ class AddEditInformationBloc
     AddEditInformationNewTextAdded event,
     Emitter<AddEditInformationState> emit,
   ) {
-    final texts = [...state.texts, const Text(content: '')];
+    final texts = [...state.texts, const Text(content: '', fontSize: 16)];
     emit(state.copyWith(texts: texts));
   }
 
-  void _addEditInformationTextSelected(
-    AddEditInformationTextSelected event,
+  void _addEditInformationTextDeleted(
+    AddEditInformationTextDeleted event,
     Emitter<AddEditInformationState> emit,
   ) {
-    emit(state.copyWith(textIndex: event.index));
+    var texts = state.texts.toList();
+    texts.remove(event.text);
+    var textsToDelete = [...state.textsToDelete, event.text];
+    emit(state.copyWith(texts: texts, textsToDelete: textsToDelete));
   }
 
   void _addEditInformationTextChanged(
     AddEditInformationTextChanged event,
     Emitter<AddEditInformationState> emit,
   ) {
-    var texts = state.texts;
-    texts[state.textIndex] = texts.elementAt(state.textIndex).copyWith(
+    var texts = state.texts.toList();
+    texts[event.index] = texts.elementAt(event.index).copyWith(
           content: event.content,
           fontSize: event.fontSize,
           isBold: event.isBold,
           isItalic: event.isItalic,
           isUnderline: event.isUnderline,
         );
-
     emit(state.copyWith(texts: texts));
   }
 
@@ -80,7 +82,17 @@ class AddEditInformationBloc
     );
 
     try {
-      await _informationRepository.save(information);
+      await _informationRepository.saveInformation(information);
+      for (final text in information.texts) {
+        if (text.id != 0) {
+          await _informationRepository.saveText(text);
+        }
+      }
+      for (final text in state.textsToDelete) {
+        if (text.id != 0) {
+          await _informationRepository.deleteText(text.id);
+        }
+      }
       emit(state.copyWith(status: AddEditInformationStatus.success));
     } catch (_) {
       emit(state.copyWith(status: AddEditInformationStatus.failure));

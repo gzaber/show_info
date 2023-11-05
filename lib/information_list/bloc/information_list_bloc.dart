@@ -27,7 +27,7 @@ class InformationListBloc
     emit(state.copyWith(status: InformationListStatus.loading));
 
     await emit.forEach<List<Information>>(
-      _informationRepository.readAll(),
+      _informationRepository.readAllInformation(),
       onData: (informationList) => state.copyWith(
         status: InformationListStatus.success,
         informationList: informationList,
@@ -43,11 +43,16 @@ class InformationListBloc
     Emitter<InformationListState> emit,
   ) async {
     emit(state.copyWith(status: InformationListStatus.loading));
+
     try {
-      await _informationRepository.delete(event.information.id);
-    } catch (e) {
+      await _informationRepository.deleteInformation(event.information.id);
+      for (final text in event.information.texts) {
+        await _informationRepository.deleteText(text.id);
+      }
+    } catch (_) {
       emit(state.copyWith(status: InformationListStatus.failure));
     }
+
     emit(state.copyWith(status: InformationListStatus.success));
   }
 }

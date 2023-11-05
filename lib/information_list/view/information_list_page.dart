@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:information_data_source/information_data_source.dart' hide Text;
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:information_repository/information_repository.dart';
 import 'package:show_information/add_edit_information/add_edit_information.dart';
 import 'package:show_information/information_list/information_list.dart';
@@ -33,7 +33,7 @@ class InformationListView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(AddEditInformationPage.route());
+          Navigator.push<bool>(context, AddEditInformationPage.route());
         },
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
@@ -63,35 +63,60 @@ class InformationListView extends StatelessWidget {
               child: Text('List is empty'),
             );
           }
-          return _InformationList(informationList: state.informationList);
+          return ListView.separated(
+            separatorBuilder: (context, index) => const Divider(),
+            itemCount: state.informationList.length,
+            itemBuilder: (_, index) {
+              final information = state.informationList[index];
+              return Slidable(
+                startActionPane: ActionPane(
+                  extentRatio: 0.2,
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) {
+                        context
+                            .read<InformationListBloc>()
+                            .add(InformationListDeletionRequested(information));
+                      },
+                      icon: Icons.delete,
+                    ),
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  extentRatio: 0.2,
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (_) {
+                        Navigator.push<bool>(
+                                context,
+                                AddEditInformationPage.route(
+                                    information: information))
+                            .then((isUpdated) {
+                          if (isUpdated == true) {
+                            context.read<InformationListBloc>().add(
+                                const InformationListSubscriptionRequested());
+                          }
+                        });
+                      },
+                      icon: Icons.edit,
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  leading:
+                      CircleAvatar(backgroundColor: Color(information.color)),
+                  title: Text(
+                    information.texts.map((t) => t.content).join('\n'),
+                  ),
+                  onTap: () {},
+                ),
+              );
+            },
+          );
         },
       ),
-    );
-  }
-}
-
-class _InformationList extends StatelessWidget {
-  const _InformationList({
-    required this.informationList,
-  });
-
-  final List<Information> informationList;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: informationList.length,
-      itemBuilder: (_, index) {
-        return ListTile(
-          title: Text(
-            '${informationList[index].texts.map((t) => t.content).toList()}',
-          ),
-          onTap: () {
-            Navigator.of(context).push(AddEditInformationPage.route(
-                information: informationList[index]));
-          },
-        );
-      },
     );
   }
 }

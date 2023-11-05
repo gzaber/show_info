@@ -7,33 +7,33 @@ class AddEditInformationState extends Equatable {
     this.status = AddEditInformationStatus.initial,
     this.initialInformation,
     this.texts = const [],
+    this.textsToDelete = const [],
     this.color = 0,
-    this.textIndex = 0,
   });
 
   final AddEditInformationStatus status;
   final Information? initialInformation;
   final List<Text> texts;
+  final List<Text> textsToDelete;
   final int color;
-  final int textIndex;
 
   AddEditInformationState copyWith({
     AddEditInformationStatus? status,
     Information? initialInformation,
     List<Text>? texts,
+    List<Text>? textsToDelete,
     int? color,
-    int? textIndex,
   }) {
     return AddEditInformationState(
       status: status ?? this.status,
       initialInformation: initialInformation ?? this.initialInformation,
       texts: texts ?? this.texts,
+      textsToDelete: textsToDelete ?? this.textsToDelete,
       color: color ?? this.color,
-      textIndex: textIndex ?? this.textIndex,
     );
   }
 
   @override
   List<Object?> get props =>
-      [status, initialInformation, texts, color, textIndex];
+      [status, initialInformation, texts, textsToDelete, color];
 }
