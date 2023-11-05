@@ -33,7 +33,7 @@ class InformationListView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, AddEditInformationPage.route());
+          Navigator.push<bool>(context, AddEditInformationPage.route());
         },
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
@@ -89,10 +89,16 @@ class InformationListView extends StatelessWidget {
                   children: [
                     SlidableAction(
                       onPressed: (_) {
-                        Navigator.push(
-                            context,
-                            AddEditInformationPage.route(
-                                information: information));
+                        Navigator.push<bool>(
+                                context,
+                                AddEditInformationPage.route(
+                                    information: information))
+                            .then((isUpdated) {
+                          if (isUpdated == true) {
+                            context.read<InformationListBloc>().add(
+                                const InformationListSubscriptionRequested());
+                          }
+                        });
                       },
                       icon: Icons.edit,
                     ),

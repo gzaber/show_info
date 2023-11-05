@@ -8,7 +8,7 @@ import 'package:show_information/add_edit_information/add_edit_information.dart'
 class AddEditInformationPage extends StatelessWidget {
   const AddEditInformationPage({super.key});
 
-  static Route route({source.Information? information}) {
+  static Route<bool> route({source.Information? information}) {
     return MaterialPageRoute(
       settings: const RouteSettings(name: '/add_edit_information'),
       builder: (_) => BlocProvider(
@@ -36,7 +36,7 @@ class AddEditInformationPage extends StatelessWidget {
             );
         }
         if (state.status == AddEditInformationStatus.success) {
-          Navigator.pop(context);
+          Navigator.pop(context, true);
         }
       },
       child: const AddEditInformationView(),
@@ -78,7 +78,7 @@ class AddEditInformationView extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: _InformationList(),
+      body: _TextList(),
     );
   }
 }
@@ -91,37 +91,30 @@ class _SelectColorButton extends StatelessWidget {
 
     return IconButton(
       onPressed: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (_) {
-              return _ColorsBottomSheetContent(
-                onColorTap: (value) {
-                  context
-                      .read<AddEditInformationBloc>()
-                      .add(AddEditInformationColorChanged(value));
-                },
-                colors: [
-                  Colors.pink.value,
-                  Colors.red.value,
-                  Colors.orange.value,
-                  Colors.amber.value,
-                  Colors.yellow.value,
-                  Colors.lime.value,
-                  Colors.lightGreen.value,
-                  Colors.green.value,
-                  Colors.teal.value,
-                  Colors.cyan.value,
-                  Colors.lightBlue.value,
-                  Colors.blue.value,
-                  Colors.indigo.value,
-                  Colors.purple.value,
-                  Colors.deepPurple.value,
-                  Colors.blueGrey.value,
-                  Colors.brown.value,
-                  Colors.grey.value,
-                ],
-              );
-            });
+        _ColorsModalBottomSheet.show(
+          context: context,
+          bloc: context.read<AddEditInformationBloc>(),
+          colors: [
+            Colors.pink.value,
+            Colors.red.value,
+            Colors.orange.value,
+            Colors.amber.value,
+            Colors.yellow.value,
+            Colors.lime.value,
+            Colors.lightGreen.value,
+            Colors.green.value,
+            Colors.teal.value,
+            Colors.cyan.value,
+            Colors.lightBlue.value,
+            Colors.blue.value,
+            Colors.indigo.value,
+            Colors.purple.value,
+            Colors.deepPurple.value,
+            Colors.blueGrey.value,
+            Colors.brown.value,
+            Colors.grey.value,
+          ],
+        );
       },
       icon: CircleAvatar(
         backgroundColor: Color(color == 0 ? Colors.indigo.value : color),
@@ -150,7 +143,7 @@ class _SaveButton extends StatelessWidget {
   }
 }
 
-class _InformationList extends StatelessWidget {
+class _TextList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final texts =
@@ -160,14 +153,14 @@ class _InformationList extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       itemCount: texts.length,
       itemBuilder: (_, index) {
-        return _TextFieldListItem(index: index, text: texts[index]);
+        return _SlidableListItem(index: index, text: texts[index]);
       },
     );
   }
 }
 
-class _TextFieldListItem extends StatelessWidget {
-  const _TextFieldListItem({
+class _SlidableListItem extends StatelessWidget {
+  const _SlidableListItem({
     required this.index,
     required this.text,
   });
@@ -177,9 +170,6 @@ class _TextFieldListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final text = context
-    //     .select((AddEditInformationBloc bloc) => bloc.state.texts[index]);
-
     return Slidable(
       startActionPane: ActionPane(
         extentRatio: 0.2,
@@ -189,7 +179,7 @@ class _TextFieldListItem extends StatelessWidget {
             onPressed: (_) {
               context
                   .read<AddEditInformationBloc>()
-                  .add(AddEditInformationTextDeleted(index));
+                  .add(AddEditInformationTextDeleted(text));
             },
             icon: Icons.delete,
           ),
@@ -201,77 +191,79 @@ class _TextFieldListItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (_) {
-              // context
-              //     .read<AddEditInformationBloc>()
-              //     .add(AddEditInformationTextSelected(index));
-              showModalBottomSheet(
+              _TextStyleModalBottomSheet.show(
                 context: context,
-                builder: (_) {
-                  return _TextStyleBottomSheetContent(
-                    text: text,
-                    onBoldChanged: () {
-                      context.read<AddEditInformationBloc>().add(
-                          AddEditInformationTextChanged(
-                              index: index, isBold: !text.isBold));
-                    },
-                    onItalicChanged: () {
-                      context.read<AddEditInformationBloc>().add(
-                          AddEditInformationTextChanged(
-                              index: index, isItalic: !text.isItalic));
-                    },
-                    onUnderlineChanged: () {
-                      context.read<AddEditInformationBloc>().add(
-                          AddEditInformationTextChanged(
-                              index: index, isUnderline: !text.isUnderline));
-                    },
-                  );
-                },
+                bloc: context.read<AddEditInformationBloc>(),
+                text: text,
+                textIndex: index,
               );
             },
             icon: Icons.text_fields,
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: TextField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-          ),
-          style: TextStyle(
-            fontSize: text.fontSize.toDouble(),
-            fontWeight: text.isBold ? FontWeight.bold : FontWeight.normal,
-            fontStyle: text.isItalic ? FontStyle.italic : FontStyle.normal,
-            decoration: text.isUnderline
-                ? TextDecoration.underline
-                : TextDecoration.none,
-          ),
-          controller: TextEditingController(
-            text: text.content,
-          ),
-          // onTap: () {
-          //   context
-          //       .read<AddEditInformationBloc>()
-          //       .add(AddEditInformationTextSelected(index));
-          // },
-          onChanged: (value) {
-            context.read<AddEditInformationBloc>().add(
-                AddEditInformationTextChanged(index: index, content: value));
-          },
+      child: _SlidableItemContent(text: text, index: index),
+    );
+  }
+}
+
+class _SlidableItemContent extends StatelessWidget {
+  const _SlidableItemContent({
+    required this.text,
+    required this.index,
+  });
+
+  final source.Text text;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: TextField(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
         ),
+        style: TextStyle(
+          fontSize: text.fontSize.toDouble(),
+          fontWeight: text.isBold ? FontWeight.bold : FontWeight.normal,
+          fontStyle: text.isItalic ? FontStyle.italic : FontStyle.normal,
+          decoration:
+              text.isUnderline ? TextDecoration.underline : TextDecoration.none,
+        ),
+        controller: TextEditingController(
+          text: text.content,
+        ),
+        onChanged: (value) {
+          context
+              .read<AddEditInformationBloc>()
+              .add(AddEditInformationTextChanged(index: index, content: value));
+        },
       ),
     );
   }
 }
 
-class _ColorsBottomSheetContent extends StatelessWidget {
-  const _ColorsBottomSheetContent({
+class _ColorsModalBottomSheet extends StatelessWidget {
+  const _ColorsModalBottomSheet({
     required this.colors,
-    required this.onColorTap,
+    required this.bloc,
   });
 
   final List<int> colors;
-  final Function(int) onColorTap;
+  final AddEditInformationBloc bloc;
+
+  static Future<void> show({
+    required BuildContext context,
+    required List<int> colors,
+    required AddEditInformationBloc bloc,
+  }) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return _ColorsModalBottomSheet(colors: colors, bloc: bloc);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -289,8 +281,8 @@ class _ColorsBottomSheetContent extends StatelessWidget {
           ...colors.map(
             (color) => GestureDetector(
               onTap: () {
+                bloc.add(AddEditInformationColorChanged(color));
                 Navigator.pop(context);
-                onColorTap(color);
               },
               child: CircleAvatar(
                 backgroundColor: Color(color),
@@ -303,23 +295,55 @@ class _ColorsBottomSheetContent extends StatelessWidget {
   }
 }
 
-class _TextStyleBottomSheetContent extends StatelessWidget {
-  const _TextStyleBottomSheetContent({
+class _TextStyleModalBottomSheet extends StatefulWidget {
+  const _TextStyleModalBottomSheet({
+    required this.bloc,
     required this.text,
-    required this.onBoldChanged,
-    required this.onItalicChanged,
-    required this.onUnderlineChanged,
+    required this.textIndex,
   });
 
+  final AddEditInformationBloc bloc;
   final source.Text text;
-  final Function() onBoldChanged;
-  final Function() onItalicChanged;
-  final Function() onUnderlineChanged;
+  final int textIndex;
+
+  static Future<void> show({
+    required BuildContext context,
+    required AddEditInformationBloc bloc,
+    required source.Text text,
+    required int textIndex,
+  }) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return _TextStyleModalBottomSheet(
+            bloc: bloc,
+            text: text,
+            textIndex: textIndex,
+          );
+        });
+  }
+
+  @override
+  State<_TextStyleModalBottomSheet> createState() =>
+      _TextStyleModalBottomSheetState();
+}
+
+class _TextStyleModalBottomSheetState
+    extends State<_TextStyleModalBottomSheet> {
+  late List<bool> selectedFormats;
+
+  @override
+  void initState() {
+    selectedFormats = [
+      widget.text.isBold,
+      widget.text.isItalic,
+      widget.text.isUnderline,
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final selectedFormats = [text.isBold, text.isItalic, text.isUnderline];
-
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
@@ -341,11 +365,24 @@ class _TextStyleBottomSheetContent extends StatelessWidget {
             onPressed: (index) {
               switch (index) {
                 case 0:
-                  onBoldChanged();
+                  setState(() {
+                    selectedFormats[0] = !selectedFormats[0];
+                    widget.bloc.add(AddEditInformationTextChanged(
+                        index: widget.textIndex, isBold: selectedFormats[0]));
+                  });
                 case 1:
-                  onItalicChanged();
+                  setState(() {
+                    selectedFormats[1] = !selectedFormats[1];
+                    widget.bloc.add(AddEditInformationTextChanged(
+                        index: widget.textIndex, isItalic: selectedFormats[1]));
+                  });
                 default:
-                  onUnderlineChanged();
+                  setState(() {
+                    selectedFormats[2] = !selectedFormats[2];
+                    widget.bloc.add(AddEditInformationTextChanged(
+                        index: widget.textIndex,
+                        isUnderline: selectedFormats[2]));
+                  });
               }
             },
             children: const [

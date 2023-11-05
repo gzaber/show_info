@@ -24,19 +24,16 @@ class InformationListBloc
     InformationListSubscriptionRequested event,
     Emitter<InformationListState> emit,
   ) async {
-    emit(state.copyWith(status: () => InformationListStatus.loading));
+    emit(state.copyWith(status: InformationListStatus.loading));
 
     await emit.forEach<List<Information>>(
-      _informationRepository.readAll(),
+      _informationRepository.readAllInformation(),
       onData: (informationList) => state.copyWith(
-        status: () => InformationListStatus.success,
-        informationList: () {
-          print(informationList);
-          return informationList;
-        },
+        status: InformationListStatus.success,
+        informationList: informationList,
       ),
       onError: (_, __) => state.copyWith(
-        status: () => InformationListStatus.failure,
+        status: InformationListStatus.failure,
       ),
     );
   }
@@ -45,12 +42,17 @@ class InformationListBloc
     InformationListDeletionRequested event,
     Emitter<InformationListState> emit,
   ) async {
-    emit(state.copyWith(status: () => InformationListStatus.loading));
+    emit(state.copyWith(status: InformationListStatus.loading));
+
     try {
-      await _informationRepository.delete(event.information.id);
-    } catch (e) {
-      emit(state.copyWith(status: () => InformationListStatus.failure));
+      await _informationRepository.deleteInformation(event.information.id);
+      for (final text in event.information.texts) {
+        await _informationRepository.deleteText(text.id);
+      }
+    } catch (_) {
+      emit(state.copyWith(status: InformationListStatus.failure));
     }
-    emit(state.copyWith(status: () => InformationListStatus.success));
+
+    emit(state.copyWith(status: InformationListStatus.success));
   }
 }

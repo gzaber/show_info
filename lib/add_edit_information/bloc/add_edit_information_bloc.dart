@@ -49,16 +49,17 @@ class AddEditInformationBloc
     AddEditInformationTextDeleted event,
     Emitter<AddEditInformationState> emit,
   ) {
-    var texts = state.texts;
-    texts.removeAt(event.index);
-    emit(state.copyWith(texts: texts));
+    var texts = state.texts.toList();
+    texts.remove(event.text);
+    var textsToDelete = [...state.textsToDelete, event.text];
+    emit(state.copyWith(texts: texts, textsToDelete: textsToDelete));
   }
 
   void _addEditInformationTextChanged(
     AddEditInformationTextChanged event,
     Emitter<AddEditInformationState> emit,
   ) {
-    var texts = state.texts;
+    var texts = state.texts.toList();
     texts[event.index] = texts.elementAt(event.index).copyWith(
           content: event.content,
           fontSize: event.fontSize,
@@ -81,7 +82,17 @@ class AddEditInformationBloc
     );
 
     try {
-      await _informationRepository.save(information);
+      await _informationRepository.saveInformation(information);
+      for (final text in information.texts) {
+        if (text.id != 0) {
+          await _informationRepository.saveText(text);
+        }
+      }
+      for (final text in state.textsToDelete) {
+        if (text.id != 0) {
+          await _informationRepository.deleteText(text.id);
+        }
+      }
       emit(state.copyWith(status: AddEditInformationStatus.success));
     } catch (_) {
       emit(state.copyWith(status: AddEditInformationStatus.failure));
