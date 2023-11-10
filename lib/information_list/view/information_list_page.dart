@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:information_data_source/information_data_source.dart' as source;
 import 'package:information_repository/information_repository.dart';
+
 import 'package:show_information/add_edit_information/add_edit_information.dart';
+import 'package:show_information/app/app.dart';
 import 'package:show_information/information_list/information_list.dart';
+import 'package:show_information/information_preview/information_preview.dart';
 
 class InformationListPage extends StatelessWidget {
   const InformationListPage({super.key});
@@ -26,6 +30,7 @@ class InformationListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           'ShowInformation',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -63,60 +68,107 @@ class InformationListView extends StatelessWidget {
               child: Text('List is empty'),
             );
           }
-          return ListView.separated(
-            separatorBuilder: (context, index) => const Divider(),
-            itemCount: state.informationList.length,
-            itemBuilder: (_, index) {
-              final information = state.informationList[index];
-              return Slidable(
-                startActionPane: ActionPane(
-                  extentRatio: 0.2,
-                  motion: const ScrollMotion(),
-                  children: [
-                    SlidableAction(
-                      onPressed: (_) {
-                        context
-                            .read<InformationListBloc>()
-                            .add(InformationListDeletionRequested(information));
-                      },
-                      icon: Icons.delete,
-                    ),
-                  ],
-                ),
-                endActionPane: ActionPane(
-                  extentRatio: 0.2,
-                  motion: const ScrollMotion(),
-                  children: [
-                    SlidableAction(
-                      onPressed: (_) {
-                        Navigator.push<bool>(
-                                context,
-                                AddEditInformationPage.route(
-                                    information: information))
-                            .then((isUpdated) {
-                          if (isUpdated == true) {
-                            context.read<InformationListBloc>().add(
-                                const InformationListSubscriptionRequested());
-                          }
-                        });
-                      },
-                      icon: Icons.edit,
-                    ),
-                  ],
-                ),
-                child: ListTile(
-                  leading:
-                      CircleAvatar(backgroundColor: Color(information.color)),
-                  title: Text(
-                    information.texts.map((t) => t.content).join('\n'),
-                  ),
-                  onTap: () {},
-                ),
-              );
-            },
-          );
+          return _InformationList(informationList: state.informationList);
         },
       ),
+    );
+  }
+}
+
+class _InformationList extends StatelessWidget {
+  const _InformationList({
+    required this.informationList,
+  });
+
+  final List<source.Information> informationList;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      separatorBuilder: (context, index) => const Divider(),
+      itemCount: informationList.length,
+      itemBuilder: (_, index) {
+        final information = informationList[index];
+        return _SlidableListItem(information: information);
+      },
+    );
+  }
+}
+
+class _SlidableListItem extends StatelessWidget {
+  const _SlidableListItem({
+    required this.information,
+  });
+
+  final source.Information information;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      startActionPane: ActionPane(
+        extentRatio: 0.2,
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (_) {
+              context
+                  .read<InformationListBloc>()
+                  .add(InformationListDeletionRequested(information));
+            },
+            icon: Icons.delete,
+            foregroundColor: AppColors.delete,
+            backgroundColor: Theme.of(context).colorScheme.background,
+          ),
+        ],
+      ),
+      endActionPane: ActionPane(
+        extentRatio: 0.2,
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (_) {
+              Navigator.push<bool>(context,
+                      AddEditInformationPage.route(information: information))
+                  .then((isUpdated) {
+                if (isUpdated == true) {
+                  context
+                      .read<InformationListBloc>()
+                      .add(const InformationListSubscriptionRequested());
+                }
+              });
+            },
+            icon: Icons.edit,
+            foregroundColor: AppColors.edit,
+            backgroundColor: Theme.of(context).colorScheme.background,
+          ),
+        ],
+      ),
+      child: _SlidableItemContent(information: information),
+    );
+  }
+}
+
+class _SlidableItemContent extends StatelessWidget {
+  const _SlidableItemContent({
+    required this.information,
+  });
+
+  final source.Information information;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        width: 10,
+        color: Color(information.color),
+      ),
+      title: Text(
+        information.texts.map((t) => t.content).join('\n'),
+      ),
+      onTap: () {
+        Navigator.push(
+            context, InformationPreviewPage.route(information: information));
+      },
     );
   }
 }

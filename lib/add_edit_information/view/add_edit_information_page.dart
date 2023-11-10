@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:information_data_source/information_data_source.dart' as source;
 import 'package:information_repository/information_repository.dart';
 import 'package:show_information/add_edit_information/add_edit_information.dart';
+import 'package:show_information/app/app.dart';
 
 class AddEditInformationPage extends StatelessWidget {
   const AddEditInformationPage({super.key});
@@ -51,6 +52,7 @@ class AddEditInformationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           context.read<AddEditInformationBloc>().state.initialInformation ==
                   null
@@ -94,26 +96,7 @@ class _SelectColorButton extends StatelessWidget {
         ColorSelectionModalBottomSheet.show(
           context: context,
           bloc: context.read<AddEditInformationBloc>(),
-          colors: [
-            Colors.pink.value,
-            Colors.red.value,
-            Colors.orange.value,
-            Colors.amber.value,
-            Colors.yellow.value,
-            Colors.lime.value,
-            Colors.lightGreen.value,
-            Colors.green.value,
-            Colors.teal.value,
-            Colors.cyan.value,
-            Colors.lightBlue.value,
-            Colors.blue.value,
-            Colors.indigo.value,
-            Colors.purple.value,
-            Colors.deepPurple.value,
-            Colors.blueGrey.value,
-            Colors.brown.value,
-            Colors.grey.value,
-          ],
+          colors: AppColors.colors,
         );
       },
       icon: CircleAvatar(
@@ -154,7 +137,6 @@ class _TextList extends StatelessWidget {
         context.select((AddEditInformationBloc bloc) => bloc.state.texts);
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       itemCount: texts.length,
       itemBuilder: (_, index) {
         return _SlidableListItem(index: index, text: texts[index]);
@@ -174,39 +156,46 @@ class _SlidableListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      startActionPane: ActionPane(
-        extentRatio: 0.2,
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (_) {
-              context
-                  .read<AddEditInformationBloc>()
-                  .add(AddEditInformationTextDeleted(text));
-            },
-            icon: Icons.delete,
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Slidable(
+        startActionPane: ActionPane(
+          extentRatio: 0.2,
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) {
+                context
+                    .read<AddEditInformationBloc>()
+                    .add(AddEditInformationTextDeleted(text));
+              },
+              icon: Icons.delete,
+              foregroundColor: AppColors.delete,
+              backgroundColor: Theme.of(context).colorScheme.background,
+            ),
+          ],
+        ),
+        endActionPane: ActionPane(
+          extentRatio: 0.2,
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) {
+                TextStyleSettingsModalBottomSheet.show(
+                  context: context,
+                  bloc: context.read<AddEditInformationBloc>(),
+                  text: text,
+                  textIndex: index,
+                );
+              },
+              icon: Icons.text_fields,
+              foregroundColor: AppColors.settings,
+              backgroundColor: Theme.of(context).colorScheme.background,
+            ),
+          ],
+        ),
+        child: _SlidableItemContent(text: text, index: index),
       ),
-      endActionPane: ActionPane(
-        extentRatio: 0.2,
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (_) {
-              TextStyleSettingsModalBottomSheet.show(
-                context: context,
-                bloc: context.read<AddEditInformationBloc>(),
-                text: text,
-                textIndex: index,
-              );
-            },
-            icon: Icons.text_fields,
-          ),
-        ],
-      ),
-      child: _SlidableItemContent(text: text, index: index),
     );
   }
 }
@@ -223,10 +212,10 @@ class _SlidableItemContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
         decoration: const InputDecoration(
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(borderRadius: BorderRadius.zero),
         ),
         style: TextStyle(
           fontSize: text.fontSize.toDouble(),
