@@ -110,9 +110,13 @@ class _SlidableListItem extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (_) {
-              context
-                  .read<InformationListBloc>()
-                  .add(InformationListDeletionRequested(information));
+              _DeleteInformationDialog.show(context: context).then((value) {
+                if (value == true) {
+                  context
+                      .read<InformationListBloc>()
+                      .add(InformationListDeletionRequested(information));
+                }
+              });
             },
             icon: Icons.delete,
             foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -168,6 +172,38 @@ class _SlidableItemContent extends StatelessWidget {
         Navigator.push(
             context, InformationPreviewPage.route(information: information));
       },
+    );
+  }
+}
+
+class _DeleteInformationDialog extends StatelessWidget {
+  static Future<bool?> show({required BuildContext context}) {
+    return showDialog(
+      context: context,
+      builder: (_) => _DeleteInformationDialog(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete'),
+      content: const Text('Do you want to delete this information?'),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          child: const Text('Approve'),
+        ),
+      ],
     );
   }
 }
