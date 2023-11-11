@@ -29,7 +29,7 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ShowInformation',
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       theme: AppTheme().light,
       darkTheme: AppTheme().dark,
       home: const InformationListPage(),

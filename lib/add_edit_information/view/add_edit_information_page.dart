@@ -70,16 +70,6 @@ class AddEditInformationView extends StatelessWidget {
           _SaveButton(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context
-              .read<AddEditInformationBloc>()
-              .add(const AddEditInformationNewTextAdded());
-        },
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: _TextList(),
     );
   }
@@ -137,9 +127,25 @@ class _TextList extends StatelessWidget {
         context.select((AddEditInformationBloc bloc) => bloc.state.texts);
 
     return ListView.builder(
-      itemCount: texts.length,
+      itemCount: texts.length + 1,
       itemBuilder: (_, index) {
-        return _SlidableListItem(index: index, text: texts[index]);
+        if (index < texts.length) {
+          return _SlidableListItem(index: index, text: texts[index]);
+        } else {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: IconButton.outlined(
+                onPressed: () {
+                  context
+                      .read<AddEditInformationBloc>()
+                      .add(const AddEditInformationNewTextAdded());
+                },
+                icon: const Icon(Icons.add),
+              ),
+            ),
+          );
+        }
       },
     );
   }
@@ -213,7 +219,7 @@ class _SlidableItemContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(
+      child: TextFormField(
         decoration: const InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.zero),
         ),
@@ -224,9 +230,7 @@ class _SlidableItemContent extends StatelessWidget {
           decoration:
               text.isUnderline ? TextDecoration.underline : TextDecoration.none,
         ),
-        controller: TextEditingController(
-          text: text.content,
-        ),
+        initialValue: text.content,
         onChanged: (value) {
           context
               .read<AddEditInformationBloc>()
