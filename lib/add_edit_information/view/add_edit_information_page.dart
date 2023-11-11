@@ -170,8 +170,8 @@ class _SlidableListItem extends StatelessWidget {
                     .add(AddEditInformationTextDeleted(text));
               },
               icon: Icons.delete,
-              foregroundColor: AppColors.delete,
-              backgroundColor: Theme.of(context).colorScheme.background,
+              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             ),
           ],
         ),
@@ -189,8 +189,8 @@ class _SlidableListItem extends StatelessWidget {
                 );
               },
               icon: Icons.text_fields,
-              foregroundColor: AppColors.settings,
-              backgroundColor: Theme.of(context).colorScheme.background,
+              foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             ),
           ],
         ),

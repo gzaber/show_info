@@ -21,8 +21,4 @@ class AppColors {
     Colors.brown.value,
     Colors.grey.value,
   ];
-
-  static const delete = Colors.red;
-  static const edit = Colors.blue;
-  static const settings = Colors.green;
 }

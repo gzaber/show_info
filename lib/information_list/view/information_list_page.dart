@@ -5,7 +5,6 @@ import 'package:information_data_source/information_data_source.dart' as source;
 import 'package:information_repository/information_repository.dart';
 
 import 'package:show_information/add_edit_information/add_edit_information.dart';
-import 'package:show_information/app/app.dart';
 import 'package:show_information/information_list/information_list.dart';
 import 'package:show_information/information_preview/information_preview.dart';
 
@@ -116,8 +115,8 @@ class _SlidableListItem extends StatelessWidget {
                   .add(InformationListDeletionRequested(information));
             },
             icon: Icons.delete,
-            foregroundColor: AppColors.delete,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           ),
         ],
       ),
@@ -138,8 +137,8 @@ class _SlidableListItem extends StatelessWidget {
               });
             },
             icon: Icons.edit,
-            foregroundColor: AppColors.edit,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           ),
         ],
       ),
