@@ -9,12 +9,14 @@ class InformationRepository {
   Future<void> saveInformation(Information information) async =>
       await _dataSource.saveInformation(information);
 
-  Future<void> saveText(Text text) async => await _dataSource.saveText(text);
-
   Future<void> deleteInformation(int id) async =>
       await _dataSource.deleteInformation(id);
 
-  Future<void> deleteText(int id) async => await _dataSource.deleteText(id);
+  Future<void> saveManyTexts(List<Text> texts) async =>
+      await _dataSource.saveManyTexts(texts);
+
+  Future<void> deleteManyTexts(List<int> ids) async =>
+      await _dataSource.deleteManyTexts(ids);
 
   Stream<List<Information>> readAllInformation() =>
       _dataSource.readAllInformation();
