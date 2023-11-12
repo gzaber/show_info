@@ -4,9 +4,9 @@ import '../models/models.dart';
 
 class Information extends Equatable {
   const Information({
-    this.id = 0,
+    required this.id,
     required this.texts,
-    this.color = 0,
+    required this.color,
   });
 
   final int id;

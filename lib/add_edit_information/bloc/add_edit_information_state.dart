@@ -8,7 +8,7 @@ class AddEditInformationState extends Equatable {
     this.initialInformation,
     this.texts = const [],
     this.textsToDelete = const [],
-    this.color = 0,
+    this.color = 0xFF673AB7,
   });
 
   final AddEditInformationStatus status;

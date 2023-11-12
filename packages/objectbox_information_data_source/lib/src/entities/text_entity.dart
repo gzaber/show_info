@@ -1,21 +1,44 @@
+import 'package:information_data_source/information_data_source.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class TextEntity {
   TextEntity({
-    this.id = 0,
-    this.content,
-    this.fontSize,
-    this.isBold,
-    this.isItalic,
-    this.isUnderline,
+    required this.id,
+    required this.content,
+    required this.fontSize,
+    required this.isBold,
+    required this.isItalic,
+    required this.isUnderline,
   });
 
   @Id()
   int id;
-  String? content;
-  int? fontSize;
-  bool? isBold;
-  bool? isItalic;
-  bool? isUnderline;
+  final String content;
+  final int fontSize;
+  final bool isBold;
+  final bool isItalic;
+  final bool isUnderline;
+
+  factory TextEntity.fromModel(Text text) {
+    return TextEntity(
+      id: text.id,
+      content: text.content,
+      fontSize: text.fontSize,
+      isBold: text.isBold,
+      isItalic: text.isItalic,
+      isUnderline: text.isUnderline,
+    );
+  }
+
+  Text toModel() {
+    return Text(
+      id: id,
+      content: content,
+      fontSize: fontSize,
+      isBold: isBold,
+      isItalic: isItalic,
+      isUnderline: isUnderline,
+    );
+  }
 }

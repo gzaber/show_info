@@ -18,7 +18,7 @@ class AddEditInformationBloc
           AddEditInformationState(
             initialInformation: initialInformation,
             texts: initialInformation?.texts ?? const [],
-            color: initialInformation?.color ?? 0,
+            color: initialInformation?.color ?? 0xFF673AB7,
           ),
         ) {
     on<AddEditInformationColorChanged>(_addEditInformationColorChanged);
@@ -41,7 +41,17 @@ class AddEditInformationBloc
     AddEditInformationNewTextAdded event,
     Emitter<AddEditInformationState> emit,
   ) {
-    final texts = [...state.texts, const Text(content: '', fontSize: 16)];
+    final texts = [
+      ...state.texts,
+      const Text(
+        id: 0,
+        content: '',
+        fontSize: 16,
+        isBold: false,
+        isItalic: false,
+        isUnderline: false,
+      ),
+    ];
     emit(state.copyWith(texts: texts));
   }
 
@@ -75,8 +85,9 @@ class AddEditInformationBloc
     Emitter<AddEditInformationState> emit,
   ) async {
     emit(state.copyWith(status: AddEditInformationStatus.loading));
-    final information =
-        (state.initialInformation ?? const Information(texts: [])).copyWith(
+    final information = (state.initialInformation ??
+            const Information(id: 0, texts: [], color: 0))
+        .copyWith(
       texts: state.texts,
       color: state.color,
     );

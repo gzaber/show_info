@@ -10,12 +10,14 @@ class ObjectboxInformationDataSource implements InformationDataSource {
 
   @override
   Future<void> saveInformation(Information information) async {
-    await _store.box<InformationEntity>().putAsync(information.toEntity());
+    await _store
+        .box<InformationEntity>()
+        .putAsync(InformationEntity.fromModel(information));
   }
 
   @override
   Future<void> saveText(Text text) async {
-    await _store.box<TextEntity>().putAsync(text.toEntity());
+    await _store.box<TextEntity>().putAsync(TextEntity.fromModel(text));
   }
 
   @override
