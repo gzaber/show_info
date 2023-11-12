@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Text extends Equatable {
   const Text({
-    required this.id,
+    this.id,
     required this.content,
     required this.fontSize,
     required this.isBold,
@@ -10,7 +10,7 @@ class Text extends Equatable {
     required this.isUnderline,
   });
 
-  final int id;
+  final int? id;
   final String content;
   final int fontSize;
   final bool isBold;
@@ -36,7 +36,7 @@ class Text extends Equatable {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [id, content, fontSize, isBold, isItalic, isUnderline];
   }
 }

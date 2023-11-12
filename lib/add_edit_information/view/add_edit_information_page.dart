@@ -127,7 +127,7 @@ class _TextList extends StatelessWidget {
         context.select((AddEditInformationBloc bloc) => bloc.state.texts);
 
     return ListView.builder(
-      itemCount: texts.length, //+ 1,
+      itemCount: texts.length + 1,
       itemBuilder: (_, index) {
         if (index < texts.length) {
           return _SlidableListItem(index: index, text: texts[index]);

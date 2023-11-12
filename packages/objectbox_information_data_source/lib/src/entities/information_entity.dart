@@ -18,7 +18,7 @@ class InformationEntity {
 
   factory InformationEntity.fromModel(Information information) {
     return InformationEntity(
-      id: information.id,
+      id: information.id ?? 0,
       texts: ToMany<TextEntity>(
         items: information.texts.map((t) => TextEntity.fromModel(t)).toList(),
       ),

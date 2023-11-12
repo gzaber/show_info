@@ -44,7 +44,6 @@ class AddEditInformationBloc
     final texts = [
       ...state.texts,
       const Text(
-        id: 0,
         content: '',
         fontSize: 16,
         isBold: false,
@@ -85,9 +84,9 @@ class AddEditInformationBloc
     Emitter<AddEditInformationState> emit,
   ) async {
     emit(state.copyWith(status: AddEditInformationStatus.loading));
-    final information = (state.initialInformation ??
-            const Information(id: 0, texts: [], color: 0))
-        .copyWith(
+    final information =
+        (state.initialInformation ?? const Information(texts: [], color: 0))
+            .copyWith(
       texts: state.texts,
       color: state.color,
     );
@@ -95,13 +94,16 @@ class AddEditInformationBloc
     try {
       await _informationRepository.saveInformation(information);
 
-      final textsToUpdate = information.texts.where((t) => t.id != 0).toList();
+      final textsToUpdate =
+          information.texts.where((t) => t.id != null).toList();
       if (textsToUpdate.isNotEmpty) {
         await _informationRepository.saveManyTexts(textsToUpdate);
       }
 
-      final textIdsToDelete =
-          state.textsToDelete.where((t) => t.id != 0).map((t) => t.id).toList();
+      final textIdsToDelete = state.textsToDelete
+          .where((t) => t.id != null)
+          .map((t) => t.id!)
+          .toList();
       if (textIdsToDelete.isNotEmpty) {
         await _informationRepository.deleteManyTexts(textIdsToDelete);
       }

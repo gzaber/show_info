@@ -22,7 +22,7 @@ class TextEntity {
 
   factory TextEntity.fromModel(Text text) {
     return TextEntity(
-      id: text.id,
+      id: text.id ?? 0,
       content: text.content,
       fontSize: text.fontSize,
       isBold: text.isBold,
