@@ -11,8 +11,8 @@ final class InformationListSubscriptionRequested extends InformationListEvent {
   const InformationListSubscriptionRequested();
 }
 
-final class InformationListDeletionRequested extends InformationListEvent {
-  const InformationListDeletionRequested(this.information);
+final class InformationListInformationDeleted extends InformationListEvent {
+  const InformationListInformationDeleted(this.information);
 
   final Information information;
 

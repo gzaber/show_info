@@ -173,7 +173,7 @@ class _SlidableListItem extends StatelessWidget {
               onPressed: (_) {
                 context
                     .read<AddEditInformationBloc>()
-                    .add(AddEditInformationTextDeleted(text));
+                    .add(AddEditInformationTextRemoved(text));
               },
               icon: Icons.delete,
               foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,

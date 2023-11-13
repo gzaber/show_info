@@ -114,7 +114,7 @@ class _SlidableListItem extends StatelessWidget {
                 if (value == true) {
                   context
                       .read<InformationListBloc>()
-                      .add(InformationListDeletionRequested(information));
+                      .add(InformationListInformationDeleted(information));
                 }
               });
             },

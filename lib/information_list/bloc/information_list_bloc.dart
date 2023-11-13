@@ -15,7 +15,7 @@ class InformationListBloc
   })  : _informationRepository = informationRepository,
         super(const InformationListState()) {
     on<InformationListSubscriptionRequested>(_onSubscriptionRequested);
-    on<InformationListDeletionRequested>(_onDeletionRequested);
+    on<InformationListInformationDeleted>(_onInformationDeleted);
   }
 
   final InformationRepository _informationRepository;
@@ -38,8 +38,8 @@ class InformationListBloc
     );
   }
 
-  Future<void> _onDeletionRequested(
-    InformationListDeletionRequested event,
+  Future<void> _onInformationDeleted(
+    InformationListInformationDeleted event,
     Emitter<InformationListState> emit,
   ) async {
     emit(state.copyWith(status: InformationListStatus.loading));

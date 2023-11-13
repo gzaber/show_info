@@ -21,23 +21,23 @@ class AddEditInformationBloc
             color: initialInformation?.color ?? 0xFF673AB7,
           ),
         ) {
-    on<AddEditInformationColorChanged>(_addEditInformationColorChanged);
-    on<AddEditInformationNewTextAdded>(_addEditInformationNewTextAdded);
-    on<AddEditInformationTextDeleted>(_addEditInformationTextDeleted);
-    on<AddEditInformationTextChanged>(_addEditInformationTextChanged);
-    on<AddEditInformationSubmitted>(_addEditInformationSubmitted);
+    on<AddEditInformationColorChanged>(_onColorChanged);
+    on<AddEditInformationNewTextAdded>(_onNewTextAdded);
+    on<AddEditInformationTextRemoved>(_onTextRemoved);
+    on<AddEditInformationTextChanged>(_onTextChanged);
+    on<AddEditInformationSubmitted>(_onSubmitted);
   }
 
   final InformationRepository _informationRepository;
 
-  void _addEditInformationColorChanged(
+  void _onColorChanged(
     AddEditInformationColorChanged event,
     Emitter<AddEditInformationState> emit,
   ) {
     emit(state.copyWith(color: event.color));
   }
 
-  void _addEditInformationNewTextAdded(
+  void _onNewTextAdded(
     AddEditInformationNewTextAdded event,
     Emitter<AddEditInformationState> emit,
   ) {
@@ -54,8 +54,8 @@ class AddEditInformationBloc
     emit(state.copyWith(texts: texts));
   }
 
-  void _addEditInformationTextDeleted(
-    AddEditInformationTextDeleted event,
+  void _onTextRemoved(
+    AddEditInformationTextRemoved event,
     Emitter<AddEditInformationState> emit,
   ) {
     var texts = [...state.texts];
@@ -64,7 +64,7 @@ class AddEditInformationBloc
     emit(state.copyWith(texts: texts, textsToDelete: textsToDelete));
   }
 
-  void _addEditInformationTextChanged(
+  void _onTextChanged(
     AddEditInformationTextChanged event,
     Emitter<AddEditInformationState> emit,
   ) {
@@ -79,7 +79,7 @@ class AddEditInformationBloc
     emit(state.copyWith(texts: texts));
   }
 
-  Future<void> _addEditInformationSubmitted(
+  Future<void> _onSubmitted(
     AddEditInformationSubmitted event,
     Emitter<AddEditInformationState> emit,
   ) async {
