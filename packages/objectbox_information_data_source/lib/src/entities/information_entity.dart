@@ -1,15 +1,17 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:information_data_source/information_data_source.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../entities/entities.dart';
 
 @Entity()
-class InformationEntity {
+class InformationEntity extends Equatable {
   InformationEntity({
     required this.id,
-    required this.texts,
+    required List<TextEntity> texts,
     required this.color,
-  });
+  }) : texts = ToMany<TextEntity>(items: texts);
 
   @Id()
   int id;
@@ -33,4 +35,7 @@ class InformationEntity {
       color: color,
     );
   }
+
+  @override
+  List<Object> get props => [id, texts, color];
 }
