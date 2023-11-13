@@ -2,8 +2,8 @@ import 'models/models.dart';
 
 abstract interface class InformationDataSource {
   Future<void> saveInformation(Information information);
-  Future<void> saveText(Text text);
   Future<void> deleteInformation(int id);
-  Future<void> deleteText(int ind);
+  Future<void> saveManyTexts(List<Text> texts);
+  Future<void> deleteManyTexts(List<int> ids);
   Stream<List<Information>> readAllInformation();
 }

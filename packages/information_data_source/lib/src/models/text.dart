@@ -2,15 +2,15 @@ import 'package:equatable/equatable.dart';
 
 class Text extends Equatable {
   const Text({
-    this.id = 0,
+    this.id,
     required this.content,
-    this.fontSize = 20,
-    this.isBold = false,
-    this.isItalic = false,
-    this.isUnderline = false,
+    required this.fontSize,
+    required this.isBold,
+    required this.isItalic,
+    required this.isUnderline,
   });
 
-  final int id;
+  final int? id;
   final String content;
   final int fontSize;
   final bool isBold;
@@ -36,6 +36,7 @@ class Text extends Equatable {
   }
 
   @override
-  List<Object> get props =>
-      [id, content, fontSize, isBold, isItalic, isUnderline];
+  List<Object?> get props {
+    return [id, content, fontSize, isBold, isItalic, isUnderline];
+  }
 }

@@ -4,12 +4,12 @@ import '../models/models.dart';
 
 class Information extends Equatable {
   const Information({
-    this.id = 0,
+    this.id,
     required this.texts,
-    this.color = 0,
+    required this.color,
   });
 
-  final int id;
+  final int? id;
   final List<Text> texts;
   final int color;
 
@@ -26,5 +26,5 @@ class Information extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, texts, color];
+  List<Object?> get props => [id, texts, color];
 }

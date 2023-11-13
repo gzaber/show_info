@@ -146,9 +146,11 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final textsParam = ToMany<TextEntity>();
           final colorParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 6);
-          final object = InformationEntity(id: idParam, color: colorParam);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
+          final object = InformationEntity(
+              id: idParam, texts: textsParam, color: colorParam);
           InternalToManyAccess.setRelInfo<InformationEntity>(object.texts,
               store, RelInfo<InformationEntity>.toMany(1, object.id));
           return object;
@@ -162,8 +164,7 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (TextEntity object, fb.Builder fbb) {
-          final contentOffset =
-              object.content == null ? null : fbb.writeString(object.content!);
+          final contentOffset = fbb.writeString(object.content);
           fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, contentOffset);
@@ -180,15 +181,15 @@ ModelDefinition getObjectBoxModel() {
           final idParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final contentParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 6);
+              .vTableGet(buffer, rootOffset, 6, '');
           final fontSizeParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
           final isBoldParam =
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 10);
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 10, false);
           final isItalicParam =
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 12);
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 12, false);
           final isUnderlineParam =
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 14);
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 14, false);
           final object = TextEntity(
               id: idParam,
               content: contentParam,

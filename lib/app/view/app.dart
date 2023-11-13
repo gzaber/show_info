@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:information_repository/information_repository.dart';
+import 'package:show_information/app/app.dart';
 import 'package:show_information/information_list/information_list.dart';
 
 class App extends StatelessWidget {
@@ -28,11 +29,9 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ShowInformation',
-      themeMode: ThemeMode.light,
-      theme: ThemeData.light(useMaterial3: true).copyWith(
-        appBarTheme: const AppBarTheme(centerTitle: true),
-      ),
-      darkTheme: ThemeData.dark(useMaterial3: true),
+      themeMode: ThemeMode.system,
+      theme: AppTheme().light,
+      darkTheme: AppTheme().dark,
       home: const InformationListPage(),
     );
   }

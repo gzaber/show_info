@@ -18,48 +18,57 @@ class AddEditInformationBloc
           AddEditInformationState(
             initialInformation: initialInformation,
             texts: initialInformation?.texts ?? const [],
-            color: initialInformation?.color ?? 0,
+            color: initialInformation?.color ?? 0xFF673AB7,
           ),
         ) {
-    on<AddEditInformationColorChanged>(_addEditInformationColorChanged);
-    on<AddEditInformationNewTextAdded>(_addEditInformationNewTextAdded);
-    on<AddEditInformationTextDeleted>(_addEditInformationTextDeleted);
-    on<AddEditInformationTextChanged>(_addEditInformationTextChanged);
-    on<AddEditInformationSubmitted>(_addEditInformationSubmitted);
+    on<AddEditInformationColorChanged>(_onColorChanged);
+    on<AddEditInformationNewTextAdded>(_onNewTextAdded);
+    on<AddEditInformationTextRemoved>(_onTextRemoved);
+    on<AddEditInformationTextChanged>(_onTextChanged);
+    on<AddEditInformationSubmitted>(_onSubmitted);
   }
 
   final InformationRepository _informationRepository;
 
-  void _addEditInformationColorChanged(
+  void _onColorChanged(
     AddEditInformationColorChanged event,
     Emitter<AddEditInformationState> emit,
   ) {
     emit(state.copyWith(color: event.color));
   }
 
-  void _addEditInformationNewTextAdded(
+  void _onNewTextAdded(
     AddEditInformationNewTextAdded event,
     Emitter<AddEditInformationState> emit,
   ) {
-    final texts = [...state.texts, const Text(content: '', fontSize: 16)];
+    final texts = [
+      ...state.texts,
+      const Text(
+        content: '',
+        fontSize: 16,
+        isBold: false,
+        isItalic: false,
+        isUnderline: false,
+      ),
+    ];
     emit(state.copyWith(texts: texts));
   }
 
-  void _addEditInformationTextDeleted(
-    AddEditInformationTextDeleted event,
+  void _onTextRemoved(
+    AddEditInformationTextRemoved event,
     Emitter<AddEditInformationState> emit,
   ) {
-    var texts = state.texts.toList();
+    var texts = [...state.texts];
     texts.remove(event.text);
     var textsToDelete = [...state.textsToDelete, event.text];
     emit(state.copyWith(texts: texts, textsToDelete: textsToDelete));
   }
 
-  void _addEditInformationTextChanged(
+  void _onTextChanged(
     AddEditInformationTextChanged event,
     Emitter<AddEditInformationState> emit,
   ) {
-    var texts = state.texts.toList();
+    var texts = [...state.texts];
     texts[event.index] = texts.elementAt(event.index).copyWith(
           content: event.content,
           fontSize: event.fontSize,
@@ -70,29 +79,35 @@ class AddEditInformationBloc
     emit(state.copyWith(texts: texts));
   }
 
-  Future<void> _addEditInformationSubmitted(
+  Future<void> _onSubmitted(
     AddEditInformationSubmitted event,
     Emitter<AddEditInformationState> emit,
   ) async {
     emit(state.copyWith(status: AddEditInformationStatus.loading));
     final information =
-        (state.initialInformation ?? const Information(texts: [])).copyWith(
+        (state.initialInformation ?? const Information(texts: [], color: 0))
+            .copyWith(
       texts: state.texts,
       color: state.color,
     );
 
     try {
       await _informationRepository.saveInformation(information);
-      for (final text in information.texts) {
-        if (text.id != 0) {
-          await _informationRepository.saveText(text);
-        }
+
+      final textsToUpdate =
+          information.texts.where((t) => t.id != null).toList();
+      if (textsToUpdate.isNotEmpty) {
+        await _informationRepository.saveManyTexts(textsToUpdate);
       }
-      for (final text in state.textsToDelete) {
-        if (text.id != 0) {
-          await _informationRepository.deleteText(text.id);
-        }
+
+      final textIdsToDelete = state.textsToDelete
+          .where((t) => t.id != null)
+          .map((t) => t.id!)
+          .toList();
+      if (textIdsToDelete.isNotEmpty) {
+        await _informationRepository.deleteManyTexts(textIdsToDelete);
       }
+
       emit(state.copyWith(status: AddEditInformationStatus.success));
     } catch (_) {
       emit(state.copyWith(status: AddEditInformationStatus.failure));

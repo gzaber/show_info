@@ -20,8 +20,8 @@ final class AddEditInformationNewTextAdded extends AddEditInformationEvent {
   const AddEditInformationNewTextAdded();
 }
 
-final class AddEditInformationTextDeleted extends AddEditInformationEvent {
-  const AddEditInformationTextDeleted(this.text);
+final class AddEditInformationTextRemoved extends AddEditInformationEvent {
+  const AddEditInformationTextRemoved(this.text);
 
   final Text text;
 
