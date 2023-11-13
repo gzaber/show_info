@@ -220,7 +220,7 @@ class _SlidableItemContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
-        key: UniqueKey(),
+        key: Key('${text.id}'),
         decoration: const InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.zero),
         ),
