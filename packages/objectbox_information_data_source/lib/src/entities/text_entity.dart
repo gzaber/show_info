@@ -1,8 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:information_data_source/information_data_source.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class TextEntity {
+class TextEntity extends Equatable {
   TextEntity({
     required this.id,
     required this.content,
@@ -40,5 +42,10 @@ class TextEntity {
       isItalic: isItalic,
       isUnderline: isUnderline,
     );
+  }
+
+  @override
+  List<Object> get props {
+    return [id, content, fontSize, isBold, isItalic, isUnderline];
   }
 }
