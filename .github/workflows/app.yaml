@@ -78,6 +78,8 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: [build_android]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v3
