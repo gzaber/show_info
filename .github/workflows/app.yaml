@@ -17,10 +17,6 @@ jobs:
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.0.0"
-          channel: "stable"
-          cache: true
 
       - name: Install dependencies
         run: flutter pub get
@@ -39,7 +35,6 @@ jobs:
           ./codecov
 
   build_android:
-    if: github.event_name == 'pull_request'
     needs: [flutter_tests]
     runs-on: ubuntu-latest
     steps:
@@ -56,13 +51,13 @@ jobs:
         run: flutter build apk --release --split-per-abi
 
       - name: Upload Android release artifacts
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v3
         with:
           name: android_release
           path: "build/app/outputs/apk/release"
 
   build_ios:
-    if: github.event_name == 'pull_request'
     needs: [flutter_tests]
     runs-on: macos-latest
     steps:
@@ -79,10 +74,17 @@ jobs:
         run: flutter build ios --release --no-codesign
 
   release_android:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push'
     needs: [build_android]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - name: Generate version variables
+        run: |
+          echo "VERSION_2ND_PLACE=$((GITHUB_RUN_NUMBER/10))" >> $GITHUB_ENV
+          echo "VERSION_3RD_PLACE=$((GITHUB_RUN_NUMBER%10))" >> $GITHUB_ENV
+
       - name: Download all artifacts
         uses: actions/download-artifact@v3
 
@@ -90,4 +92,4 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "android_release/*.apk"
-          tag: v1.0.0
+          tag: v1.${{ env.VERSION_2ND_PLACE }}.${{ env.VERSION_3RD_PLACE }}
