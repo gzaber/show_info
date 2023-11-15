@@ -154,7 +154,7 @@ void main() {
             texts: [text],
           ),
         ],
-        verify: (bloc) {
+        verify: (_) {
           verify(() => informationRepository.saveInformation(
                 Information(
                   texts: const [text],
@@ -204,7 +204,7 @@ void main() {
             textsToDelete: [text.copyWith(id: 3), text.copyWith(id: 4)],
           ),
         ],
-        verify: (bloc) {
+        verify: (_) {
           verify(() => informationRepository.saveInformation(
               information.copyWith(
                   id: 1,
@@ -236,7 +236,7 @@ void main() {
             texts: [text],
           ),
         ],
-        verify: (bloc) {
+        verify: (_) {
           verify(() => informationRepository.saveInformation(
                 Information(
                   texts: const [text],
