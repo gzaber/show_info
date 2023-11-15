@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:information_data_source/information_data_source.dart';
-import 'package:show_information/add_edit_information/bloc/add_edit_information_bloc.dart';
+import 'package:show_information/add_edit_information/add_edit_information.dart';
 
 void main() {
   group('AddEditInformationEvent', () {
