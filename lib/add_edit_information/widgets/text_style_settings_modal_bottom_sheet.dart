@@ -57,69 +57,83 @@ class _TextStyleSettingsModalBottomSheetState
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-      child: Wrap(
-        spacing: 20,
-        runSpacing: 20,
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          OutlinedButton(
-            onPressed: () {
-              setState(() {
-                widget.bloc.add(
-                  AddEditInformationTextChanged(
-                      index: widget.textIndex, fontSize: --fontSize),
-                );
-              });
-            },
-            child: const Icon(Icons.text_decrease),
-          ),
-          Text(
-            '$fontSize',
-            style: TextStyle(
-                fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize),
-          ),
-          OutlinedButton(
-            onPressed: () {
-              setState(() {
-                widget.bloc.add(
-                  AddEditInformationTextChanged(
-                      index: widget.textIndex, fontSize: ++fontSize),
-                );
-              });
-            },
-            child: const Icon(Icons.text_increase),
-          ),
-          ToggleButtons(
-            isSelected: selectedFormats,
-            onPressed: (index) {
-              switch (index) {
-                case 0:
+          Wrap(
+            spacing: 20,
+            runSpacing: 20,
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              OutlinedButton(
+                onPressed: () {
                   setState(() {
-                    selectedFormats[0] = !selectedFormats[0];
-                    widget.bloc.add(AddEditInformationTextChanged(
-                        index: widget.textIndex, isBold: selectedFormats[0]));
+                    widget.bloc.add(
+                      AddEditInformationTextChanged(
+                          index: widget.textIndex, fontSize: --fontSize),
+                    );
                   });
-                case 1:
+                },
+                child: const Icon(Icons.text_decrease),
+              ),
+              Text(
+                '$fontSize',
+                style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize),
+              ),
+              OutlinedButton(
+                onPressed: () {
                   setState(() {
-                    selectedFormats[1] = !selectedFormats[1];
-                    widget.bloc.add(AddEditInformationTextChanged(
-                        index: widget.textIndex, isItalic: selectedFormats[1]));
+                    widget.bloc.add(
+                      AddEditInformationTextChanged(
+                          index: widget.textIndex, fontSize: ++fontSize),
+                    );
                   });
-                default:
-                  setState(() {
-                    selectedFormats[2] = !selectedFormats[2];
-                    widget.bloc.add(AddEditInformationTextChanged(
-                        index: widget.textIndex,
-                        isUnderline: selectedFormats[2]));
-                  });
-              }
-            },
-            children: const [
-              Icon(Icons.format_bold),
-              Icon(Icons.format_italic),
-              Icon(Icons.format_underline)
+                },
+                child: const Icon(Icons.text_increase),
+              ),
+              ToggleButtons(
+                isSelected: selectedFormats,
+                onPressed: (index) {
+                  switch (index) {
+                    case 0:
+                      setState(() {
+                        selectedFormats[0] = !selectedFormats[0];
+                        widget.bloc.add(AddEditInformationTextChanged(
+                            index: widget.textIndex,
+                            isBold: selectedFormats[0]));
+                      });
+                    case 1:
+                      setState(() {
+                        selectedFormats[1] = !selectedFormats[1];
+                        widget.bloc.add(AddEditInformationTextChanged(
+                            index: widget.textIndex,
+                            isItalic: selectedFormats[1]));
+                      });
+                    default:
+                      setState(() {
+                        selectedFormats[2] = !selectedFormats[2];
+                        widget.bloc.add(AddEditInformationTextChanged(
+                            index: widget.textIndex,
+                            isUnderline: selectedFormats[2]));
+                      });
+                  }
+                },
+                children: const [
+                  Icon(Icons.format_bold),
+                  Icon(Icons.format_italic),
+                  Icon(Icons.format_underline)
+                ],
+              ),
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: OutlinedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Icon(Icons.check),
+            ),
           ),
         ],
       ),

@@ -38,6 +38,8 @@ class ColorSelectionModalBottomSheet extends StatelessWidget {
         children: [
           ...colors.map(
             (color) => GestureDetector(
+              key: Key(
+                  'colorSelectionModalBottomSheet_color${colors.indexOf(color)}'),
               onTap: () {
                 bloc.add(AddEditInformationColorChanged(color));
                 Navigator.pop(context);
