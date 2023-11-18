@@ -9,9 +9,9 @@ import '../entities/entities.dart';
 class InformationEntity extends Equatable {
   InformationEntity({
     required this.id,
-    required List<TextEntity> texts,
+    required this.texts,
     required this.color,
-  }) : texts = ToMany<TextEntity>(items: texts);
+  });
 
   @Id()
   int id;
