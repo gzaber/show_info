@@ -20,4 +20,21 @@ extension PumpApp on WidgetTester {
       ),
     );
   }
+
+  Future<void> pumpRoute(
+    Route<dynamic> route, {
+    InformationRepository? informationRepository,
+  }) {
+    return pumpApp(
+      Navigator(onGenerateRoute: (_) => route),
+      informationRepository: informationRepository,
+    );
+  }
+
+  Future<void> dragSlidable(Finder finder, Offset offset) async {
+    final gesture = await startGesture(getTopLeft(finder));
+    await gesture.moveBy(offset);
+    await gesture.cancel();
+    await pump();
+  }
 }

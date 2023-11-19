@@ -27,6 +27,9 @@ class AddEditInformationPage extends StatelessWidget {
     return BlocListener<AddEditInformationBloc, AddEditInformationState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
+        if (state.status == AddEditInformationStatus.success) {
+          Navigator.pop(context, true);
+        }
         if (state.status == AddEditInformationStatus.failure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -35,9 +38,6 @@ class AddEditInformationPage extends StatelessWidget {
                 content: Text('Something went wrong'),
               ),
             );
-        }
-        if (state.status == AddEditInformationStatus.success) {
-          Navigator.pop(context, true);
         }
       },
       child: const AddEditInformationView(),
@@ -82,6 +82,7 @@ class _SelectColorButton extends StatelessWidget {
         context.select((AddEditInformationBloc bloc) => bloc.state.color);
 
     return IconButton(
+      key: const Key('addEditInformationView_selectColorButton'),
       onPressed: () {
         ColorSelectionModalBottomSheet.show(
           context: context,
