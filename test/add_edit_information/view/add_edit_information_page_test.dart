@@ -92,6 +92,7 @@ void main() {
       await tester.pumpApp(buildSubject());
       await tester.pump();
 
+      expect(find.byType(SnackBar), findsOneWidget);
       expect(
         find.descendant(
           of: find.byType(SnackBar),
@@ -186,7 +187,7 @@ void main() {
           findsOneWidget,
         );
       });
-      testWidgets('renders CircularProgress indicator when status is loading',
+      testWidgets('renders CircularProgressIndicator when status is loading',
           (tester) async {
         when(() => addEditInformationBloc.state).thenReturn(
           const AddEditInformationState(
@@ -280,15 +281,6 @@ void main() {
         expect(find.byIcon(Icons.delete), findsOneWidget);
       });
 
-      testWidgets('renders text fields icon when slides to the left',
-          (tester) async {
-        await tester.pumpApp(buildSubject());
-
-        await tester.dragSlidable(finder, offsetToLeft);
-
-        expect(find.byIcon(Icons.text_fields), findsOneWidget);
-      });
-
       testWidgets(
           'adds AddEditInformationTextRemoved event to bloc when delete button is tapped',
           (tester) async {
@@ -299,6 +291,15 @@ void main() {
 
         verify(() => addEditInformationBloc
             .add(const AddEditInformationTextRemoved(text))).called(1);
+      });
+
+      testWidgets('renders text fields icon when slides to the left',
+          (tester) async {
+        await tester.pumpApp(buildSubject());
+
+        await tester.dragSlidable(finder, offsetToLeft);
+
+        expect(find.byIcon(Icons.text_fields), findsOneWidget);
       });
 
       testWidgets(
