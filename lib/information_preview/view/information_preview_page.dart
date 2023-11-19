@@ -11,6 +11,7 @@ class InformationPreviewPage extends StatelessWidget {
 
   static Route<void> route({required source.Information information}) {
     return MaterialPageRoute(
+      settings: const RouteSettings(name: '/information_preview'),
       builder: (_) => InformationPreviewPage(information: information),
     );
   }
