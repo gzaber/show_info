@@ -170,7 +170,9 @@ class _SlidableItemContent extends StatelessWidget {
       ),
       onTap: () {
         Navigator.push(
-            context, InformationPreviewPage.route(information: information));
+          context,
+          InformationPreviewPage.route(information: information),
+        );
       },
     );
   }
@@ -178,7 +180,7 @@ class _SlidableItemContent extends StatelessWidget {
 
 class _DeleteInformationDialog extends StatelessWidget {
   static Future<bool?> show({required BuildContext context}) {
-    return showDialog(
+    return showDialog<bool>(
       context: context,
       builder: (_) => _DeleteInformationDialog(),
     );
