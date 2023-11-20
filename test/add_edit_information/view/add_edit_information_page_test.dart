@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:information_data_source/information_data_source.dart' as source;
-import 'package:mockingjay/mockingjay.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:show_information/add_edit_information/add_edit_information.dart';
 
 import '../../helpers/helpers.dart';
@@ -24,25 +24,18 @@ void main() {
   );
   const information = source.Information(id: 1, texts: [text], color: 0xAB);
 
-  late MockNavigator navigator;
   late AddEditInformationBloc addEditInformationBloc;
 
   setUp(() {
-    navigator = MockNavigator();
-    when(() => navigator.push<void>(any())).thenAnswer((_) async {});
-
     addEditInformationBloc = MockAddEditInformationBloc();
     when(() => addEditInformationBloc.state).thenReturn(AddEditInformationState(
         initialInformation: information, texts: information.texts));
   });
   group('AddEditInformationPage', () {
     Widget buildSubject() {
-      return MockNavigatorProvider(
-        navigator: navigator,
-        child: BlocProvider.value(
-          value: addEditInformationBloc,
-          child: const AddEditInformationPage(),
-        ),
+      return BlocProvider.value(
+        value: addEditInformationBloc,
+        child: const AddEditInformationPage(),
       );
     }
 
@@ -75,9 +68,9 @@ void main() {
             AddEditInformationState(status: AddEditInformationStatus.success),
           ]));
 
-      await tester.pumpApp(buildSubject());
+      await tester.pumpToPop(buildSubject());
 
-      verify(() => navigator.pop(true)).called(1);
+      expect(find.byType(AddEditInformationPage), findsNothing);
     });
 
     testWidgets('shows SnackBar with message when failure occured',
@@ -118,16 +111,12 @@ void main() {
     }
 
     testWidgets('pops when back button is tapped', (tester) async {
-      await tester.pumpApp(
-        MockNavigatorProvider(
-          navigator: navigator,
-          child: buildSubject(),
-        ),
-      );
+      await tester.pumpToPop(buildSubject());
 
       await tester.tap(find.byIcon(Icons.arrow_back_ios));
+      await tester.pumpAndSettle();
 
-      verify(() => navigator.pop()).called(1);
+      expect(find.byType(AddEditInformationView), findsNothing);
     });
 
     testWidgets(

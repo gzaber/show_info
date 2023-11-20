@@ -31,6 +31,31 @@ extension PumpApp on WidgetTester {
     );
   }
 
+  Future<void> pumpToPop(
+    Widget widget,
+  ) async {
+    await pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) {
+            return Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => widget),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
+    await tap(find.byType(FloatingActionButton));
+    await pumpAndSettle();
+  }
+
   Future<void> dragSlidable(Finder finder, Offset offset) async {
     final gesture = await startGesture(getTopLeft(finder));
     await gesture.moveBy(offset);

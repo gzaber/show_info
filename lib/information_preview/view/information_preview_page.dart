@@ -11,7 +11,6 @@ class InformationPreviewPage extends StatelessWidget {
 
   static Route<void> route({required source.Information information}) {
     return MaterialPageRoute(
-      settings: const RouteSettings(name: '/information_preview'),
       builder: (_) => InformationPreviewPage(information: information),
     );
   }
@@ -21,7 +20,7 @@ class InformationPreviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop<void>(context),
           icon: const Icon(Icons.arrow_back_ios),
         ),
       ),

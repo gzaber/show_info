@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockingjay/mockingjay.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:show_information/add_edit_information/add_edit_information.dart';
 
 import '../../helpers/helpers.dart';
@@ -13,12 +13,10 @@ class MockAddEditInformationBloc
 void main() {
   group('ColorSelectionModalBottomSheet', () {
     late AddEditInformationBloc addEditInformationBloc;
-    late MockNavigator navigator;
     final colors = [Colors.red.value, Colors.green.value, Colors.blue.value];
 
     setUp(() {
       addEditInformationBloc = MockAddEditInformationBloc();
-      navigator = MockNavigator();
     });
 
     Widget buildSubject() {
@@ -53,23 +51,19 @@ void main() {
     });
 
     testWidgets('pops when color button is tapped', (tester) async {
-      await tester.pumpApp(
-        MockNavigatorProvider(
-          navigator: navigator,
-          child: buildSubject(),
-        ),
-      );
+      await tester.pumpToPop(buildSubject());
 
       await tester
           .tap(find.byKey(const Key('colorSelectionModalBottomSheet_color0')));
+      await tester.pumpAndSettle();
 
-      verify(() => navigator.pop()).called(1);
+      expect(find.byType(ColorSelectionModalBottomSheet), findsNothing);
     });
 
     testWidgets(
         'adds AddEditInformationColorChanged event to bloc when color button is tapped',
         (tester) async {
-      await tester.pumpApp(buildSubject());
+      await tester.pumpToPop(buildSubject());
 
       await tester
           .tap(find.byKey(const Key('colorSelectionModalBottomSheet_color0')));

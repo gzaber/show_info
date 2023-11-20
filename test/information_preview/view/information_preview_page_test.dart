@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:information_data_source/information_data_source.dart' as source;
-import 'package:mockingjay/mockingjay.dart';
 import 'package:show_information/information_preview/information_preview.dart';
 
 import '../../helpers/helpers.dart';
@@ -20,12 +19,6 @@ void main() {
     final information =
         source.Information(id: 1, texts: [text1, text2], color: 0xAB);
 
-    late MockNavigator navigator;
-
-    setUp(() {
-      navigator = MockNavigator();
-    });
-
     Widget buildSubject() {
       return InformationPreviewPage(information: information);
     }
@@ -41,18 +34,12 @@ void main() {
     });
 
     testWidgets('pops when back button is tapped', (tester) async {
-      when(() => navigator.push<void>(any())).thenAnswer((_) async {});
-
-      await tester.pumpApp(
-        MockNavigatorProvider(
-          navigator: navigator,
-          child: buildSubject(),
-        ),
-      );
+      await tester.pumpToPop(buildSubject());
 
       await tester.tap(find.byIcon(Icons.arrow_back_ios));
+      await tester.pumpAndSettle();
 
-      verify(() => navigator.pop()).called(1);
+      expect(find.byType(InformationPreviewPage), findsNothing);
     });
 
     testWidgets('renders information texts', (tester) async {

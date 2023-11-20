@@ -11,7 +11,6 @@ class AddEditInformationPage extends StatelessWidget {
 
   static Route<bool> route({source.Information? information}) {
     return MaterialPageRoute(
-      settings: const RouteSettings(name: '/add_edit_information'),
       builder: (_) => BlocProvider(
         create: (context) => AddEditInformationBloc(
           informationRepository: context.read<InformationRepository>(),

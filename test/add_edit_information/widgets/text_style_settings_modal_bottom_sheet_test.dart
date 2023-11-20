@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:information_data_source/information_data_source.dart' as source;
-import 'package:mockingjay/mockingjay.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:show_information/add_edit_information/add_edit_information.dart';
 
 import '../../helpers/helpers.dart';
@@ -14,7 +14,6 @@ class MockAddEditInformationBloc
 void main() {
   group('TextStyleSettingsModalBottomSheet', () {
     late AddEditInformationBloc addEditInformationBloc;
-    late MockNavigator navigator;
     const source.Text text = source.Text(
       id: 1,
       content: 'content',
@@ -26,7 +25,6 @@ void main() {
 
     setUp(() {
       addEditInformationBloc = MockAddEditInformationBloc();
-      navigator = MockNavigator();
     });
 
     Widget buildSubject() {
@@ -63,16 +61,12 @@ void main() {
     });
 
     testWidgets('pops when check button is tapped', (tester) async {
-      await tester.pumpApp(
-        MockNavigatorProvider(
-          navigator: navigator,
-          child: buildSubject(),
-        ),
-      );
+      await tester.pumpToPop(buildSubject());
 
       await tester.tap(find.byIcon(Icons.check));
+      await tester.pumpAndSettle();
 
-      verify(() => navigator.pop()).called(1);
+      expect(find.byType(TextStyleSettingsModalBottomSheet), findsNothing);
     });
 
     testWidgets(
