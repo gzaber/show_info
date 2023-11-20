@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:information_data_source/information_data_source.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_information_data_source/src/entities/entities.dart';
 
 void main() {
@@ -14,11 +15,19 @@ void main() {
     );
 
     InformationEntity createInformationEntity() {
-      return InformationEntity(id: 1, texts: [textEntity], color: 0xAE);
+      return InformationEntity(
+        id: 1,
+        texts: ToMany<TextEntity>(items: [textEntity]),
+        color: 0xAE,
+      );
     }
 
     Information createInformationModel() {
-      return Information(id: 1, texts: [textEntity.toModel()], color: 0xAE);
+      return Information(
+        id: 1,
+        texts: [textEntity.toModel()],
+        color: 0xAE,
+      );
     }
 
     group('constructor', () {

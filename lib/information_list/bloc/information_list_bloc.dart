@@ -45,13 +45,14 @@ class InformationListBloc
 
     try {
       await _informationRepository.deleteInformation(event.information.id!);
+
       final textIdsToDelete =
           event.information.texts.map((t) => t.id!).toList();
       await _informationRepository.deleteManyTexts(textIdsToDelete);
+
+      emit(state.copyWith(status: InformationListStatus.success));
     } catch (_) {
       emit(state.copyWith(status: InformationListStatus.failure));
     }
-
-    emit(state.copyWith(status: InformationListStatus.success));
   }
 }
