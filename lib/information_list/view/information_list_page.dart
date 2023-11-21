@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:information_data_source/information_data_source.dart' as source;
 import 'package:information_repository/information_repository.dart';
@@ -30,9 +31,9 @@ class InformationListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'ShowInformation',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          AppLocalizations.of(context)!.informationListAppBarTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -50,8 +51,8 @@ class InformationListView extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                const SnackBar(
-                  content: Text('Something went wrong'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.errorMessage),
                 ),
               );
           }
@@ -63,8 +64,9 @@ class InformationListView extends StatelessWidget {
             );
           }
           if (state.informationList.isEmpty) {
-            return const Center(
-              child: Text('List is empty'),
+            return Center(
+              child:
+                  Text(AppLocalizations.of(context)!.informationListEmptyList),
             );
           }
           return _InformationList(informationList: state.informationList);
@@ -189,21 +191,31 @@ class _DeleteInformationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Delete'),
-      content: const Text('Do you want to delete this information?'),
+      title: Text(
+        AppLocalizations.of(context)!.informationListDeleteDialogTitle,
+      ),
+      content: Text(
+        AppLocalizations.of(context)!.informationListDeleteDialogContent,
+      ),
       actionsAlignment: MainAxisAlignment.spaceBetween,
       actions: [
         TextButton(
           onPressed: () {
             Navigator.pop(context, false);
           },
-          child: const Text('Cancel'),
+          child: Text(
+            AppLocalizations.of(context)!
+                .informationListDeleteDialogCancelButtonText,
+          ),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(context, true);
           },
-          child: const Text('Approve'),
+          child: Text(
+            AppLocalizations.of(context)!
+                .informationListDeleteDialogApproveButtonText,
+          ),
         ),
       ],
     );
