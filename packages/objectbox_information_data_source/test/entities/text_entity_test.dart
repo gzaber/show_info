@@ -44,19 +44,6 @@ void main() {
       });
     });
 
-    group('equality', () {
-      test('supports value equality', () {
-        expect(createTextEntity(), equals(createTextEntity()));
-      });
-
-      test('props are correct', () {
-        expect(
-          createTextEntity().props,
-          equals([1, 'content', 20, false, false, false]),
-        );
-      });
-    });
-
     group('fromModel', () {
       test('returns TextEntity created from Text model', () {
         expect(

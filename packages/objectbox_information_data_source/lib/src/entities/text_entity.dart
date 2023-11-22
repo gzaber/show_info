@@ -4,7 +4,7 @@ import 'package:information_data_source/information_data_source.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class TextEntity extends Equatable {
+class TextEntity {
   TextEntity({
     required this.id,
     required this.content,
@@ -42,10 +42,5 @@ class TextEntity extends Equatable {
       isItalic: isItalic,
       isUnderline: isUnderline,
     );
-  }
-
-  @override
-  List<Object> get props {
-    return [id, content, fontSize, isBold, isItalic, isUnderline];
   }
 }

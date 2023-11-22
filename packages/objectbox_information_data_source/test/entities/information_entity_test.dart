@@ -36,23 +36,6 @@ void main() {
       });
     });
 
-    group('equality', () {
-      test('supports value equality', () {
-        expect(createInformationEntity(), equals(createInformationEntity()));
-      });
-
-      test('props are corrects', () {
-        expect(
-          createInformationEntity().props,
-          equals([
-            1,
-            [textEntity],
-            0xAE
-          ]),
-        );
-      });
-    });
-
     group('fromModel', () {
       test('returns InformationEntity created from Information model', () {
         expect(
