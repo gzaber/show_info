@@ -279,7 +279,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.delete));
 
         verify(() => addEditInformationBloc
-            .add(const AddEditInformationTextRemoved(text))).called(1);
+            .add(const AddEditInformationTextRemoved(0))).called(1);
       });
 
       testWidgets('renders text fields icon when slides to the left',

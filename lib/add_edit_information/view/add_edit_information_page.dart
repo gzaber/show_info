@@ -179,7 +179,7 @@ class _SlidableListItem extends StatelessWidget {
               onPressed: (_) {
                 context
                     .read<AddEditInformationBloc>()
-                    .add(AddEditInformationTextRemoved(text));
+                    .add(AddEditInformationTextRemoved(index));
               },
               icon: Icons.delete,
               foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -226,7 +226,6 @@ class _SlidableItemContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
-        key: Key('${text.id}'),
         decoration: const InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.zero),
         ),

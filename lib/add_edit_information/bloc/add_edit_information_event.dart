@@ -21,12 +21,12 @@ final class AddEditInformationNewTextAdded extends AddEditInformationEvent {
 }
 
 final class AddEditInformationTextRemoved extends AddEditInformationEvent {
-  const AddEditInformationTextRemoved(this.text);
+  const AddEditInformationTextRemoved(this.index);
 
-  final Text text;
+  final int index;
 
   @override
-  List<Object> get props => [text];
+  List<Object> get props => [index];
 }
 
 final class AddEditInformationTextChanged extends AddEditInformationEvent {
