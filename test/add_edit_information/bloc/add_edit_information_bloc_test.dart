@@ -80,7 +80,7 @@ void main() {
             texts: [
               Text(
                 content: '',
-                fontSize: 16,
+                fontSize: 20,
                 isBold: false,
                 isItalic: false,
                 isUnderline: false,
