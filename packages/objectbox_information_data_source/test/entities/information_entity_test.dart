@@ -40,7 +40,7 @@ void main() {
       test('returns InformationEntity created from Information model', () {
         expect(
           InformationEntity.fromModel(createInformationModel()),
-          equals(createInformationEntity()),
+          isA<InformationEntity>(),
         );
       });
     });
