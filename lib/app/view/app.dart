@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:information_repository/information_repository.dart';
 import 'package:show_information/app/app.dart';
 import 'package:show_information/information_list/information_list.dart';
@@ -32,6 +33,8 @@ class AppView extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme().light,
       darkTheme: AppTheme().dark,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const InformationListPage(),
     );
   }

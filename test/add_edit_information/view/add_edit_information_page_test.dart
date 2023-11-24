@@ -89,7 +89,7 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(SnackBar),
-          matching: find.text('Something went wrong'),
+          matching: find.text(l10n.errorMessage),
         ),
         findsOneWidget,
       );
@@ -128,7 +128,7 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(AppBar),
-          matching: find.text('Update'),
+          matching: find.text(l10n.addEditInformationUpdateAppBarTitle),
         ),
         findsOneWidget,
       );
@@ -146,7 +146,7 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(AppBar),
-          matching: find.text('Create'),
+          matching: find.text(l10n.addEditInformationCreateAppBarTitle),
         ),
         findsOneWidget,
       );
@@ -279,7 +279,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.delete));
 
         verify(() => addEditInformationBloc
-            .add(const AddEditInformationTextRemoved(text))).called(1);
+            .add(const AddEditInformationTextRemoved(0))).called(1);
       });
 
       testWidgets('renders text fields icon when slides to the left',

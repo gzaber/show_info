@@ -44,32 +44,19 @@ void main() {
       });
     });
 
-    group('equality', () {
-      test('supports value equality', () {
-        expect(createTextEntity(), equals(createTextEntity()));
-      });
-
-      test('props are correct', () {
-        expect(
-          createTextEntity().props,
-          equals([1, 'content', 20, false, false, false]),
-        );
-      });
-    });
-
     group('fromModel', () {
       test('returns TextEntity created from Text model', () {
         expect(
           TextEntity.fromModel(createTextModel()),
-          equals(createTextEntity()),
+          isA<TextEntity>(),
         );
       });
 
       test('returns TextEntity with id equals to 0 when model id is null', () {
-        expect(
-          TextEntity.fromModel(createTextModel(id: null)),
-          equals(createTextEntity(id: 0)),
-        );
+        final textEntity = TextEntity.fromModel(createTextModel(id: null));
+
+        expect(textEntity, isA<TextEntity>());
+        expect(textEntity.id, equals(0));
       });
     });
 

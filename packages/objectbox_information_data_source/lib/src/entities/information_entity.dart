@@ -6,7 +6,7 @@ import 'package:objectbox/objectbox.dart';
 import '../entities/entities.dart';
 
 @Entity()
-class InformationEntity extends Equatable {
+class InformationEntity {
   InformationEntity({
     required this.id,
     required this.texts,
@@ -35,7 +35,4 @@ class InformationEntity extends Equatable {
       color: color,
     );
   }
-
-  @override
-  List<Object> get props => [id, texts, color];
 }

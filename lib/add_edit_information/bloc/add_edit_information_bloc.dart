@@ -44,7 +44,7 @@ class AddEditInformationBloc
       ...state.texts,
       const Text(
         content: '',
-        fontSize: 16,
+        fontSize: 20,
         isBold: false,
         isItalic: false,
         isUnderline: false,
@@ -56,10 +56,14 @@ class AddEditInformationBloc
   void _onTextRemoved(
     AddEditInformationTextRemoved event,
     Emitter<AddEditInformationState> emit,
-  ) {
+  ) async {
     var texts = [...state.texts];
-    texts.remove(event.text);
-    var textsToDelete = [...state.textsToDelete, event.text];
+    final removedText = texts.removeAt(event.index);
+
+    emit(state.copyWith(texts: []));
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    var textsToDelete = [...state.textsToDelete, removedText];
     emit(state.copyWith(texts: texts, textsToDelete: textsToDelete));
   }
 

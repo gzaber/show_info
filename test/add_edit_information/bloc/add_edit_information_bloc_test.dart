@@ -80,7 +80,7 @@ void main() {
             texts: [
               Text(
                 content: '',
-                fontSize: 16,
+                fontSize: 20,
                 isBold: false,
                 isItalic: false,
                 isUnderline: false,
@@ -96,10 +96,19 @@ void main() {
         'emits new state with text removed from list of texts '
         'and added to list of texts to delete',
         build: buildBloc,
-        seed: () => const AddEditInformationState(texts: [text]),
-        act: (bloc) => bloc.add(const AddEditInformationTextRemoved(text)),
-        expect: () => const [
-          AddEditInformationState(texts: [], textsToDelete: [text]),
+        seed: () => AddEditInformationState(
+          texts: [
+            text.copyWith(id: 1),
+            text.copyWith(id: 2),
+          ],
+        ),
+        act: (bloc) => bloc.add(const AddEditInformationTextRemoved(0)),
+        wait: const Duration(milliseconds: 100),
+        expect: () async => [
+          const AddEditInformationState(texts: [], textsToDelete: []),
+          AddEditInformationState(
+              texts: [text.copyWith(id: 2)],
+              textsToDelete: [text.copyWith(id: 1)]),
         ],
       );
     });

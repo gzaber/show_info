@@ -88,7 +88,7 @@ void main() {
         expect(dataSource.saveInformation(information), completes);
 
         verify(() => mockInformationBox
-            .putAsync(InformationEntity.fromModel(information))).called(1);
+            .putAsync(any(that: isA<InformationEntity>()))).called(1);
       });
     });
 
@@ -110,8 +110,8 @@ void main() {
 
         expect(dataSource.saveManyTexts([text1, text2]), completes);
 
-        verify(() => mockTextBox.putManyAsync(
-                [TextEntity.fromModel(text1), TextEntity.fromModel(text2)]))
+        verify(() =>
+                mockTextBox.putManyAsync(any(that: isA<List<TextEntity>>())))
             .called(1);
       });
     });

@@ -1,0 +1,13 @@
+{
+    "errorMessage": "Something went wrong",
+
+    "informationListAppBarTitle": "ShowInformation",
+    "informationListEmptyList": "The list of information is empty",
+    "informationListDeleteDialogTitle": "Delete",
+    "informationListDeleteDialogContent": "Do you want to delete this information?",
+    "informationListDeleteDialogCancelButtonText": "Cancel",
+    "informationListDeleteDialogApproveButtonText": "Approve",
+
+    "addEditInformationCreateAppBarTitle": "Create",
+    "addEditInformationUpdateAppBarTitle": "Update"
+}

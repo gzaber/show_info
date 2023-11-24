@@ -92,7 +92,7 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(AppBar),
-          matching: find.text('ShowInformation'),
+          matching: find.text(l10n.informationListAppBarTitle),
         ),
         findsOneWidget,
       );
@@ -124,7 +124,7 @@ void main() {
       expect(
         find.descendant(
           of: find.byType(SnackBar),
-          matching: find.text('Something went wrong'),
+          matching: find.text(l10n.errorMessage),
         ),
         findsOneWidget,
       );
@@ -138,7 +138,10 @@ void main() {
 
       await tester.pumpApp(buildSubject());
 
-      expect(find.text('List is empty'), findsOneWidget);
+      expect(
+        find.text(l10n.informationListEmptyList),
+        findsOneWidget,
+      );
     });
 
     testWidgets(
@@ -220,7 +223,7 @@ void main() {
         expect(
           find.descendant(
             of: find.byType(AlertDialog),
-            matching: find.text('Do you want to delete this information?'),
+            matching: find.text(l10n.informationListDeleteDialogContent),
           ),
           findsOneWidget,
         );
@@ -234,7 +237,8 @@ void main() {
         await tester.dragSlidable(finder, offsetToRight);
         await tester.tap(find.byIcon(Icons.delete));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Approve'));
+        await tester
+            .tap(find.text(l10n.informationListDeleteDialogApproveButtonText));
 
         verify(() => informationListBloc.add(
             const InformationListInformationDeleted(information))).called(1);
@@ -248,7 +252,8 @@ void main() {
         await tester.dragSlidable(finder, offsetToRight);
         await tester.tap(find.byIcon(Icons.delete));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Cancel'));
+        await tester
+            .tap(find.text(l10n.informationListDeleteDialogCancelButtonText));
 
         verifyNever(() => informationListBloc
             .add(const InformationListInformationDeleted(information)));

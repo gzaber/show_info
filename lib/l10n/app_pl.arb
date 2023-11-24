@@ -1,0 +1,13 @@
+{
+    "errorMessage": "Coś poszło nie tak",
+
+    "informationListAppBarTitle": "ShowInformation",
+    "informationListEmptyList": "Lista informacji jest pusta",
+    "informationListDeleteDialogTitle": "Usuń",
+    "informationListDeleteDialogContent": "Czy chcesz usunąć tą informację?",
+    "informationListDeleteDialogCancelButtonText": "Anuluj",
+    "informationListDeleteDialogApproveButtonText": "Zatwierdź",
+
+    "addEditInformationCreateAppBarTitle": "Utwórz",
+    "addEditInformationUpdateAppBarTitle": "Aktualizuj"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:information_data_source/information_data_source.dart' as source;
 import 'package:information_repository/information_repository.dart';
@@ -33,8 +34,8 @@ class AddEditInformationPage extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(
-                content: Text('Something went wrong'),
+              SnackBar(
+                content: Text(AppLocalizations.of(context)!.errorMessage),
               ),
             );
         }
@@ -53,10 +54,15 @@ class AddEditInformationView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          context.read<AddEditInformationBloc>().state.initialInformation ==
+          context
+                      .read<AddEditInformationBloc>()
+                      .state
+                      .initialInformation ==
                   null
-              ? 'Create'
-              : 'Update',
+              ? AppLocalizations.of(context)!
+                  .addEditInformationCreateAppBarTitle
+              : AppLocalizations.of(context)!
+                  .addEditInformationUpdateAppBarTitle,
         ),
         leading: IconButton(
           onPressed: () {
@@ -173,7 +179,7 @@ class _SlidableListItem extends StatelessWidget {
               onPressed: (_) {
                 context
                     .read<AddEditInformationBloc>()
-                    .add(AddEditInformationTextRemoved(text));
+                    .add(AddEditInformationTextRemoved(index));
               },
               icon: Icons.delete,
               foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -220,7 +226,6 @@ class _SlidableItemContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
-        key: Key('${text.id}'),
         decoration: const InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.zero),
         ),
